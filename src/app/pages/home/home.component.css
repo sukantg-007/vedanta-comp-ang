@@ -1,0 +1,176 @@
+/* Container Layout */
+.home-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+}
+
+/* --- Carousel Section --- */
+.carousel-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  min-height: 40vh;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.6;
+}
+
+.carousel-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #ffffff;
+  padding: 20px;
+  max-width: 80%;
+}
+
+.carousel-overlay h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-overlay p {
+  font-size: 1.2rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Carousel Control Arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 3;
+  transition: background 0.3s;
+}
+
+.arrow:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.arrow.left { left: 20px; }
+.arrow.right { right: 20px; }
+
+
+/* --- Login Section --- */
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card h2 {
+  margin: 0 0 8px 0;
+  color: #333333;
+  font-size: 1.8rem;
+}
+
+.login-card p {
+  margin: 0 0 24px 0;
+  color: #666666;
+  font-size: 0.95rem;
+}
+
+/* Form Inputs */
+.login-card label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444444;
+  margin-bottom: 6px;
+}
+
+.login-card input {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #0056b3;
+}
+
+/* Action Button */
+.login-card button[type="submit"] {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.login-card button[type="submit"]:hover {
+  background-color: #004085;
+}
+
+/* Feedback & Hints */
+.error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 15px !important;
+  text-align: center;
+}
+
+.login-card small {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #888888;
+  font-size: 0.85rem;
+}
+
+
+/* --- Responsive Desktop Split (Screens wider than 768px) --- */
+@media (min-width: 768px) {
+  .home-container {
+    grid-template-columns: 1.2fr 1fr; /* Split layout: Left panel slightly wider */
+  }
+
+  .carousel-section {
+    min-height: 100vh; /* Stretch to full height */
+  }
+}
