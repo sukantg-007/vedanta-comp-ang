@@ -70,13 +70,12 @@ function addAccessToken(
   });
 }
 
-function isAuthenticationRequest(
-  url: string
-): boolean {
+function isAuthenticationRequest(url: string): boolean {
+  // Checks for the core auth endpoints regardless of the prefix/domain context path
   return (
-    url.includes('/api/auth/login') ||
-    url.includes('/api/auth/refresh') ||
-    url.includes('/api/auth/logout')
+    url.includes('auth/login') ||
+    url.includes('auth/refresh') ||
+    url.includes('auth/logout')
   );
 }
 
