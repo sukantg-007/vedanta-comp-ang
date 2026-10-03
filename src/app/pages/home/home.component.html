@@ -1,4 +1,5 @@
 <div class="home-container">
+  <!-- Carousel Section: Left Completely As Is -->
   <section class="carousel-section">
     <img
       [src]="slides[currentSlide].image"
@@ -20,39 +21,113 @@
     </button>
   </section>
 
+  <!-- Side Form Panel with Fixed Content Box -->
   <section class="login-section">
-    <form class="login-card" (ngSubmit)="login()">
-      <h2>Login</h2>
-      <p>Enter your credentials to continue.</p>
+    <div class="login-card">
+      
+      <!-- Clean Toggle Tabs -->
+      <div class="form-toggle-header">
+        <button 
+          type="button" 
+          [class.active]="activeForm === 'login'" 
+          (click)="switchForm('login')">
+          Login
+        </button>
+        <button 
+          type="button" 
+          [class.active]="activeForm === 'enquiry'" 
+          (click)="switchForm('enquiry')">
+          Enquiry
+        </button>
+      </div>
 
-      <label for="email">Email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        [(ngModel)]="email"
-        required
-        placeholder="admin&#64;example.com"
-      />
+      <!-- Wrapped inside a scroll-safe content block -->
+      <div class="form-body">
+        <!-- VIEW 1: SIGN IN VIEW -->
+        @if (activeForm === 'login') {
+          <form (ngSubmit)="login()">
+            <h2>Login</h2>
+            <p>Enter your credentials to continue.</p>
 
-      <label for="password">Password</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        [(ngModel)]="password"
-        required
-        placeholder="Enter password"
-      />
+            <label for="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              [(ngModel)]="email"
+              required
+              placeholder="admin&#64;example.com"
+            />
 
-      <!-- Updated old *ngIf to the modern Angular @if control flow -->
-      @if (errorMessage) {
-        <p class="error">{{ errorMessage }}</p>
-      }
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              [(ngModel)]="password"
+              required
+              placeholder="Enter password"
+            />
 
-      <button type="submit">Sign in</button>
+            @if (errorMessage) {
+              <p class="error">{{ errorMessage }}</p>
+            }
 
-      <small>Demo: admin&#64;example.com / admin123</small>
-    </form>
+            <button type="submit" class="submit-btn">Sign in</button>
+            <small>Demo: admin&#64;example.com / admin123</small>
+          </form>
+        }
+
+        <!-- VIEW 2: ENQUIRY VIEW -->
+        @else if (activeForm === 'enquiry') {
+          <form (ngSubmit)="submitEnquiry()">
+            <h2>Enquiry</h2>
+            <p>Submit your details to register.</p>
+
+            <label for="studentName">Full Name</label>
+            <input
+              id="studentName"
+              name="studentName"
+              type="text"
+              [(ngModel)]="enquiryData.name"
+              required
+              placeholder="John Doe"
+            />
+
+            <label for="studentEmail">Email Address</label>
+            <input
+              id="studentEmail"
+              name="studentEmail"
+              type="email"
+              [(ngModel)]="enquiryData.email"
+              required
+              placeholder="john&#64;example.com"
+            />
+
+            <label for="course">Course of Interest</label>
+            <input
+              id="course"
+              name="course"
+              type="text"
+              [(ngModel)]="enquiryData.course"
+              required
+              placeholder="Angular Web Development"
+            />
+
+            <label for="message">Message / Notes</label>
+            <input
+              id="message"
+              name="message"
+              type="text"
+              [(ngModel)]="enquiryData.message"
+              placeholder="Any specific questions?"
+            />
+
+            <button type="submit" class="submit-btn enquiry-btn">Submit Enquiry</button>
+          </form>
+        }
+      </div>
+
+    </div>
   </section>
 </div>

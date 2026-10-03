@@ -1,0 +1,108 @@
+/* Container Box Frame Setup */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* --- Fixed Sidebar Styling Elements --- */
+.sidebar {
+  width: 260px;
+  background-color: #1e293b;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  padding: 30px 20px;
+  background-color: #0f172a;
+  border-bottom: 1px solid #334155;
+}
+
+.sidebar-header h3 { margin: 0; font-size: 1.4rem; color: #38bdf8; }
+.sidebar-header p { margin: 5px 0 0 0; font-size: 0.85rem; color: #94a3b8; }
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.nav-menu button {
+  text-align: left;
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-menu button:hover { background-color: #334155; color: #ffffff; }
+.nav-menu button.active { background-color: #0284c7; color: #ffffff; font-weight: 600; }
+
+.sidebar-footer { padding: 20px; border-top: 1px solid #334155; }
+.logout-btn {
+  width: 100%; background-color: #ef4444; border: none; color: white;
+  padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.logout-btn:hover { background-color: #dc2626; }
+
+/* --- Workspace Layout Area --- */
+.main-content { flex-grow: 1; display: flex; flex-direction: column; padding: 40px; overflow-y: auto; }
+.content-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 35px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px;
+}
+.content-header h2 { margin: 0; color: #1e293b; font-size: 1.7rem; }
+.user-badge { background: #e2e8f0; padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #475569; }
+
+/* --- Metrics Analytics Panels Layout --- */
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 20px; }
+.metric-card { padding: 30px; border-radius: 12px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.metric-card.blue { background: linear-gradient(135deg, #0284c7, #0369a1); }
+.metric-card.green { background: linear-gradient(135deg, #16a34a, #15803d); }
+.metric-card.orange { background: linear-gradient(135deg, #ea580c, #c2410c); }
+.metric-card.purple { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+.metric-card h4 { margin: 0; font-size: 1.1rem; opacity: 0.9; }
+.metric-card .count { margin: 15px 0 0 0; font-size: 2.5rem; font-weight: 700; }
+
+/* --- Grid Action Elements & Tables Layout --- */
+.data-section { background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+.section-actions { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+.action-btn {
+  background-color: #0284c7; color: white; border: none; padding: 12px 20px;
+  font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;
+}
+.action-btn:hover { background-color: #0369a1; }
+
+.dashboard-table { width: 100%; border-collapse: collapse; text-align: left; }
+.dashboard-table th { background-color: #f8fafc; padding: 16px; color: #64748b; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+.dashboard-table td { padding: 16px; border-bottom: 1px solid #e2e8f0; color: #334155; }
+.dashboard-table tr:hover { background-color: #f8fafc; }
+.delete-link { background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer; }
+.delete-link:hover { text-decoration: underline; }
+.empty-msg { text-align: center; color: #94a3b8; padding: 40px !important; font-style: italic; }
+
+/* --- Advertisement Slivers Grid Layout --- */
+.banner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+.banner-card { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
+.banner-preview { width: 100%; height: 140px; object-fit: cover; background: #e2e8f0; }
+.banner-body { padding: 20px; }
+.banner-body h5 { margin: 0 0 8px 0; font-size: 1.1rem; color: #1e293b; }
+.banner-body p { margin: 0 0 20px 0; font-size: 0.9rem; color: #64748b; line-height: 1.4; }
+.delete-btn-block {
+  width: 100%; background: none; border: 1px solid #ef4444; color: #ef4444;
+  padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.delete-btn-block:hover { background-color: #ef4444; color: white; }

@@ -1,0 +1,188 @@
+<div class="dashboard-container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>Vedanta Admin</h3>
+      <p>Management Portal</p>
+    </div>
+    <nav class="nav-menu">
+      <button [class.active]="activeTab === 'overview'" (click)="switchTab('all')">
+        📊 Overview
+      </button>
+      <button [class.active]="activeTab === 'staff'" (click)="switchTab('staff')">
+        👥 Staff Management
+      </button>
+      <button [class.active]="activeTab === 'student'" (click)="switchTab('student')">
+        🎓 Student Portal
+      </button>
+      <button [class.active]="activeTab === 'course'" (click)="switchTab('course')">
+        📚 Course Directory
+      </button>
+      <button [class.active]="activeTab === 'advertisement'" (click)="switchTab('advertisement')">
+        🖼️ Carousel Ads
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">🚪 Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main Content Workspace Area -->
+  <main class="main-content">
+    <!-- Header Summary Block -->
+    <header class="content-header">
+      <h2>{{ getTabTitle() }}</h2>
+      <div class="user-badge">Welcome, Admin</div>
+    </header>
+
+    <!-- TAB 1: SYSTEM OVERVIEW METRICS -->
+    @if (activeTab === 'overview') {
+      <div class="metrics-grid">
+        <div class="metric-card blue">
+          <h4>Total Staff</h4>
+          <p class="count">{{ staffList.length }}</p>
+        </div>
+        <div class="metric-card green">
+          <h4>Enrolled Students</h4>
+          <p class="count">{{ studentList.length }}</p>
+        </div>
+        <div class="metric-card orange">
+          <h4>Active Courses</h4>
+          <p class="count">{{ courseList.length }}</p>
+        </div>
+        <div class="metric-card purple">
+          <h4>Carousel Banner Ads</h4>
+          <p class="count">{{ adList.length }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- TAB 2: STAFF MANAGEMENT -->
+    @if (activeTab === 'staff') {
+      <div class="data-section">
+        <div class="section-actions">
+          <button class="action-btn" (click)="openModal('staff')">+ Add New Staff Member</button>
+        </div>
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Department</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (staff of staffList; track staff.id) {
+              <tr>
+                <td>#{{ staff.id }}</td>
+                <td>{{ staff.name }}</td>
+                <td>{{ staff.email }}</td>
+                <td>{{ staff.department || 'General' }}</td>
+                <td>
+                  <button class="delete-link" (click)="deleteItem('staff', staff.id)">Delete</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="empty-msg">No staff records found.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- TAB 3: STUDENT MANAGEMENT -->
+    @if (activeTab === 'student') {
+      <div class="data-section">
+        <div class="section-actions">
+          <button class="action-btn" (click)="openModal('student')">+ Register Student</button>
+        </div>
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Enrolled Course</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (student of studentList; track student.id) {
+              <tr>
+                <td>#{{ student.id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.course || 'Unassigned' }}</td>
+                <td>
+                  <button class="delete-link" (click)="deleteItem('student', student.id)">Delete</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="empty-msg">No student records found.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- TAB 4: COURSE DIRECTORY -->
+    @if (activeTab === 'course') {
+      <div class="data-section">
+        <div class="section-actions">
+          <button class="action-btn" (click)="openModal('course')">+ Add New Course</button>
+        </div>
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Course Name</th>
+              <th>Duration (Months)</th>
+              <th>Fees</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (course of courseList; track course.id) {
+              <tr>
+                <td>#{{ course.id }}</td>
+                <td><strong>{{ course.name }}</strong></td>
+                <td>{{ course.durationMonths }} Months</td>
+                <td>₹{{ course.fees }}</td>
+                <td>
+                  <button class="delete-link" (click)="deleteItem('course', course.id)">Delete</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="empty-msg">No courses available.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- TAB 5: CAROUSEL BANNER ADVERTISEMENTS -->
+    @if (activeTab === 'advertisement') {
+      <div class="data-section">
+        <div class="section-actions">
+          <button class="action-btn" (click)="openModal('ad')">+ Add Banner Slide</button>
+        </div>
+        <div class="banner-grid">
+          @for (ad of adList; track ad.id) {
+            <div class="banner-card">
+              <img [src]="ad.imageUrl" alt="Ad Banner" class="banner-preview" />
+              <div class="banner-body">
+                <h5>{{ ad.title }}</h5>
+                <p>{{ ad.description }}</p>
+                <button class="delete-btn-block" (click)="deleteItem('ad', ad.id)">Remove Slide</button>
+              </div>
+            </div>
+          } @empty {
+            <p class="empty-msg">No active carousel banner advertisements configured.</p>
+          }
+        </div>
+      </div>
+    }
+  </main>
+</div>

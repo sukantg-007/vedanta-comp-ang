@@ -1,13 +1,13 @@
-/* Container Layout */
+/* --- Global Container --- */
 .home-container {
   display: grid;
   grid-template-columns: 1fr;
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background-color: #f4f6f9;
 }
 
-/* --- Carousel Section --- */
+/* --- Carousel Layout (Kept As Is) --- */
 .carousel-section {
   position: relative;
   display: flex;
@@ -49,7 +49,6 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* Carousel Control Arrows */
 .arrow {
   position: absolute;
   top: 50%;
@@ -65,60 +64,106 @@
   transition: background 0.3s;
 }
 
-.arrow:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
+.arrow:hover { background: rgba(255, 255, 255, 0.5); }
 .arrow.left { left: 20px; }
 .arrow.right { right: 20px; }
 
 
-/* --- Login Section --- */
+/* --- Form Side Layout & Stability Fixes --- */
 .login-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 20px;
 }
 
+/* Standardized sizing box preventing layout distortion */
 .login-card {
   background: #ffffff;
-  padding: 40px;
+  padding: 35px 30px;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  min-height: 560px; /* Lock baseline size so switching forms doesn't shrink the UI */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Scrollable form inner layer if components overflow screen space */
+.form-body {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  animation: fadeIn 0.25s ease-in-out; /* Smooth transition fade trick */
+}
+
 .login-card h2 {
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   color: #333333;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 
 .login-card p {
-  margin: 0 0 24px 0;
+  margin: 0 0 20px 0;
   color: #666666;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
-/* Form Inputs */
+
+/* --- Sliding Tab Controls --- */
+.form-toggle-header {
+  display: flex;
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+
+.form-toggle-header button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 10px 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666666;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.form-toggle-header button.active {
+  background-color: #ffffff;
+  color: #0056b3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* --- Form Fields & Buttons --- */
 .login-card label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #444444;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .login-card input {
-  padding: 12px;
-  margin-bottom: 20px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
   border: 1px solid #cccccc;
   border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  font-size: 0.95rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .login-card input:focus {
@@ -126,51 +171,55 @@
   border-color: #0056b3;
 }
 
-/* Action Button */
-.login-card button[type="submit"] {
+.submit-btn {
   background-color: #0056b3;
   color: white;
   border: none;
-  padding: 14px;
-  font-size: 1rem;
+  padding: 12px;
+  font-size: 0.95rem;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 5px;
 }
 
-.login-card button[type="submit"]:hover {
-  background-color: #004085;
-}
+.submit-btn:hover { background-color: #004085; }
+.enquiry-btn { background-color: #28a745; }
+.enquiry-btn:hover { background-color: #218838; }
 
-/* Feedback & Hints */
 .error {
   color: #dc3545;
   background-color: #f8d7da;
-  padding: 10px;
+  padding: 8px;
   border-radius: 6px;
-  font-size: 0.9rem;
-  margin-bottom: 15px !important;
+  font-size: 0.85rem;
+  margin-bottom: 12px !important;
   text-align: center;
 }
 
 .login-card small {
   display: block;
   text-align: center;
-  margin-top: 20px;
+  margin-top: auto; /* Pushes the demo text perfectly to the bottom */
+  padding-top: 15px;
   color: #888888;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
+/* Smooth Fade Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* --- Responsive Desktop Split (Screens wider than 768px) --- */
+/* --- Desktop Responsive Split --- */
 @media (min-width: 768px) {
   .home-container {
-    grid-template-columns: 1.2fr 1fr; /* Split layout: Left panel slightly wider */
+    grid-template-columns: 1.2fr 1fr;
   }
-
   .carousel-section {
-    min-height: 100vh; /* Stretch to full height */
+    min-height: 100vh;
   }
 }
