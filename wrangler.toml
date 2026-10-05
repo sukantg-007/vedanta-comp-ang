@@ -1,0 +1,6 @@
+name = "vedanta-comp-ang"
+compatibility_date = "2026-10-05"
+
+[assets]
+directory = "dist/vedanta-comp-portal/browser"
+not_found_handling = "single-page-application"

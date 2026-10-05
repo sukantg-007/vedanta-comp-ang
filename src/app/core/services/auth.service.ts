@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { AuthRequest } from '../../shared/auth.model';
+import { AuthRequest } from '../../shared/models/auth.model';
 
 @Injectable({
   providedIn: 'root'

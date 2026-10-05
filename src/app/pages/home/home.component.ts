@@ -1,20 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { AuthRequest } from '../../shared/auth.model';
+import { AuthRequest } from '../../shared/models/auth.model';
+import { Enquiry } from '../../shared/models/enquiry.model';
+import { EnquiryService } from '../../core/services/enquiry.service';
+import { IndianMobileValidatorDirective } from '../../shared/validator/indian-mobile.validator';
+import { CustomEmailValidatorDirective } from '../../shared/validator/custom-email.validator';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, 
+            FormsModule,
+            IndianMobileValidatorDirective,
+            CustomEmailValidatorDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, 
+              private router: Router,
+              private enquiryService: EnquiryService) { }
 
   ngOnInit(): void {
     // 2. If the user clicks back and lands here but is STILL logged in...
@@ -39,14 +48,15 @@ export class HomeComponent {
   // Credentials models
   email = '';
   password = '';
-  errorMessage = '';
+  loginErrorMessage= '';
+  enquiryErrorMessage= '';
 
   // Enquiry submission models
-  enquiryData = {
+ enquiryData: Enquiry = {
     name: '',
     email: '',
-    course: '',
-    message: ''
+    mobileNumber: '',
+    course: ''
   };
 
   previousSlide() {
@@ -57,25 +67,26 @@ export class HomeComponent {
     this.currentSlide = this.currentSlide === this.slides.length - 1 ? 0 : this.currentSlide + 1;
   }
 
-  switchForm(formType: 'login' | 'enquiry') {
+  switchForm(formType: 'login' | 'enquiry') {debugger;
     this.activeForm = formType;
-    this.errorMessage = '';
+    this.loginErrorMessage = '';
+    this.enquiryErrorMessage = '';
   }
 
   login(): void {
-    this.errorMessage = '';
+    this.loginErrorMessage = '';
     // 1. Email Format Validation using a standard regex pattern
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!this.email || !emailRegex.test(this.email)) {
-      this.errorMessage = 'Please enter a valid email address.';
+      this.loginErrorMessage = 'Please enter a valid email address.';
       return;
     }
     // 2. Password Length Validation (Minimum 4 characters)
     if (!this.password || this.password.length < 4) {
-      this.errorMessage = 'Password must be at least 4 characters long.';
+      this.loginErrorMessage = 'Password must be at least 4 characters long.';
       return;
     }
-    this.errorMessage = ''; // Clear any previous error messages
+    this.loginErrorMessage = ''; // Clear any previous error messages
     // 1. Bundle the data into a clear payload object
     const loginPayload: AuthRequest = {
       email: this.email,
@@ -94,16 +105,88 @@ export class HomeComponent {
 
         if (error.status === 401 || error.status === 403 || error.status === 400) {
           // Correctly navigate down into your Spring Boot ErrorResponse object structure
-          this.errorMessage = error.error?.message || 'Invalid email or password.';
+          this.loginErrorMessage = error.error?.message || 'Invalid email or password.';
         } else {
-          this.errorMessage = 'Server is unreachable. Please ensure the backend is running.';
+          this.loginErrorMessage = 'Server is unreachable. Please ensure the backend is running.';
         }
       }
     });
   }
 
-  submitEnquiry() {
-    alert(`Thank you ${this.enquiryData.name}! Your enquiry for ${this.enquiryData.course} has been received.`);
-    this.enquiryData = { name: '', email: '', course: '', message: '' };
+  submitEnquiry(form: NgForm): void {debugger;
+    this.enquiryErrorMessage = '';
+
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      this.validateEnquiryForm(form);
+      return;
+    }
+    this.enquiryService.submitEnquiry(this.enquiryData).subscribe({
+      next: () => {
+        alert('Enquiry submitted successfully.');
+
+        this.enquiryData = {
+          name: '',
+          email: '',
+          mobileNumber: '',
+          course: ''
+        };
+
+        this.activeForm = 'enquiry'; // Switch back to the enquiry form after successful submission
+      },
+      error: (error) => {
+        console.error('Error submitting enquiry:', error);
+        if (error.status === 401 || error.status === 403 || error.status === 400) {
+          // Correctly navigate down into your Spring Boot ErrorResponse object structure
+          this.enquiryErrorMessage = error.error?.message || 'Invalid email or mobile number.';
+        } else {
+          this.enquiryErrorMessage = 'Server is unreachable. Please ensure the backend is running.';
+        }
+      }
+    });
   }
+
+  private validateEnquiryForm(form: NgForm): boolean {debugger;
+    const emailControl = form.controls['studentEmail'];
+    const mobileControl = form.controls['mobileNumber'];
+    this.enquiryErrorMessage = '';
+
+    if (form.controls['studentName']?.errors?.['required']) {
+      this.enquiryErrorMessage = 'Full name is required.';
+      return false;
+    }
+
+    if (form.controls['studentName']?.errors?.['minlength']) {
+      this.enquiryErrorMessage =
+        'Full name must contain at least 2 characters.';
+      return false;
+    }
+
+    if (
+      emailControl?.errors?.['customEmail'] ||
+      emailControl?.errors?.['email']
+    ) {
+      this.enquiryErrorMessage = 'Please enter a valid email address.';
+      return false;
+    }
+
+    if (mobileControl?.errors?.['required']) {
+      this.enquiryErrorMessage = 'Mobile number is required.';
+      return false;
+    }
+
+    if (mobileControl?.errors?.['indianMobile']) {
+      this.enquiryErrorMessage =
+        'Please enter a valid 10-digit mobile number.';
+      return false;
+    }
+
+    if (form.controls['course']?.errors?.['required']) {
+      this.enquiryErrorMessage = 'Course of interest is required.';
+      return false;
+    }
+
+    return true;
+  }
+
 }
